@@ -1,6 +1,22 @@
 [build]
-  command = "pnpm run build:spa"
+  command = "pnpm run build:desktop"
   publish = "dist/desktop"
 
-[build.environment]
-  NODE_OPTIONS = "--max-old-space-size=4096"
+# ১. SPA স্ট্যাটিক অ্যাসেট রিডাইরেক্ট
+[[redirects]]
+  from = "/_spa/*"
+  to = "/:splat"
+  status = 200
+
+# ২. Discover ও Market API প্রক্সি
+[[redirects]]
+  from = "/api/discover/*"
+  to = "https://chat-preview.lobehub.com/api/discover/:splat"
+  status = 200
+  force = true
+
+# ৩. ক্লায়েন্ট-সাইড রাউটিং ফলব্যাক
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
